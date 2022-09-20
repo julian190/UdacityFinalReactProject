@@ -1,5 +1,9 @@
 import Book from "./book";
-const Shelf = ({ book, ShelfName }) => {
+const Shelf = ({ book, ShelfName,onchangeShelf}) => {
+  const listenToBookChange = (book,sheelf) =>{
+    onchangeShelf(book,sheelf)
+
+  }
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{ShelfName}</h2>
@@ -7,10 +11,9 @@ const Shelf = ({ book, ShelfName }) => {
         <ol className="books-grid">
           {book.map((e) => (
             <Book
-              key={e.id}
-              bookName={e.title}
-              author={e.authors.length === 1 ? e.authors : e.authors.join()}
-              bookcover={e.imageLinks.thumbnail}
+             book = {e}
+             key = {e.id}
+              listenToBookChange={listenToBookChange}
             />
           ))}
         </ol>

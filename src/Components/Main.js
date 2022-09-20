@@ -1,7 +1,30 @@
-import Book from "./book";
 import Shelf from "./Shelf";
-const Main = ({ books }) => {
-    console.log(books)
+import { useState, useEffect } from "react";
+import { getAll, update } from "../BooksAPI";
+import { Link } from "react-router-dom";
+const Main = () => {
+  const updatebook = () => {
+    const fetchdata = async () => {
+      const res = await getAll();
+      setShowBooks(res);
+      console.log(res);
+    };
+    fetchdata();
+  };
+
+  const [ShowBooks, setShowBooks] = useState([]);
+  useEffect(() => {
+    updatebook();
+  }, []);
+  const onBookShelfChange = (bookID, Shelf) => {
+    const updateBookShelf = async () => {
+      const res = await update(bookID, Shelf);
+      console.log(res);
+      updatebook();
+    };
+    updateBookShelf();
+  };
+
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -9,13 +32,27 @@ const Main = ({ books }) => {
       </div>
       <div className="list-books-content">
         <div>
-            <Shelf ShelfName={"Currently Reading"} book={books.filter(e=> e.shelf==="currentlyReading")}/>
-            <Shelf ShelfName={"Want to Read"} book={books.filter(e=> e.shelf==="wantToRead")}/>
-            <Shelf ShelfName={"Read"} book={books.filter(e=> e.shelf==="read")}/>
+          <Shelf
+            ShelfName={"Currently Reading"}
+            book={ShowBooks.filter((e) => e.shelf === "currentlyReading")}
+            onchangeShelf={onBookShelfChange}
+          />
+          <Shelf
+            ShelfName={"Want to Read"}
+            book={ShowBooks.filter((e) => e.shelf === "wantToRead")}
+            onchangeShelf={onBookShelfChange}
+          />
+          <Shelf
+            ShelfName={"Read"}
+            book={ShowBooks.filter((e) => e.shelf === "read")}
+            onchangeShelf={onBookShelfChange}
+          />
         </div>
       </div>
       <div className="open-search">
-        <a onClick={() => console.log("clicked")}>Add a book</a>
+        <Link to="/search">
+          Add a book
+        </Link>
       </div>
     </div>
   );
