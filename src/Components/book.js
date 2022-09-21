@@ -20,7 +20,7 @@ const [shelfname,SetShelfName] = useState("");
       SetShelfName(book.shelf);
     }
   };
-  useEffect(()=>{selectShelf(book.title)},[])
+  useEffect(()=>{selectShelf(book.title)},)
   return (
     <li>
       <div className="book">
